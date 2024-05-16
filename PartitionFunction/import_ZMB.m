@@ -142,12 +142,24 @@ function [B_all, M_all, ZMB_all, lKrow]= import_all_ZMB(RubiscoModel, f_prefix)
       [Npartitions, ~]=size(ZMB);
       Npartitions=Npartitions+1;
       ZMB_all=zeros(NlK, Npartitions);
+    else
+      
     end
     
-    B_all=[0;B_all];
-    M_all=[0;M_all];
-    ZMB_all(i,:) =([1;ZMB]);
+    if length(ZMB)+1 ~= size(ZMB_all,2)
+      rm_i=[rm_i, i];
+    else
+      B_all=[0;B_all];
+      M_all=[0;M_all];
+      ZMB_all(i,:) =([1;ZMB]);
+    end
   end
+  for i=1:length(rm_i)
+    ind=rm_i( end+1-i );
+    lKrow(ind)     =[];
+    ZMB_all(ind,:) =[];
+  end
+  
   
 end
 
